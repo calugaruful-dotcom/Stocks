@@ -125,7 +125,7 @@ class Stock:
             plt.ylabel(self.type + 'Price $')
             plt.show()
 
-        def SimpleMovingAverage(self, list, window=30):
+        def SimpleMovingAverage(self, window=30):
             list = self.GetClosePrice()
             sma = pd.DataFrame(list)
             sma30 = sma.rolling(window).mean()
@@ -144,19 +144,7 @@ testtodate.calcCloseAndDates()
 max = testtodate.FindMaxima()
 min = testtodate.FindMinima()
 
-
 plt.figure(figsize=(12.5, 4.5))
-closeprice = testtodate.GetClosePrice()
-
-# sma = pd.DataFrame(closeprice)
-# sma2 = sma.rolling(window=30).mean()
-# sma3 = sma.rolling(window=100).mean()
-#
-# plt.plot(sma2, 'r')
-# plt.plot(sma3, 'b')
-# plt.plot(sma, 'g')
-# plt.show()
-SMA30 = testtodate.SimpleMovingAverage(closeprice)
-plt.plot(SMA30, 'g')
-plt.plot(closeprice, 'r' )
+plt.plot(testtodate.SimpleMovingAverage(60), 'g')
+plt.plot(testtodate.GetClosePrice(), 'r' )
 plt.show()
