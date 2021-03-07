@@ -1,13 +1,8 @@
 import yfinance as yf
 import numpy as np
 import pandas as pd
-import datetime
-import pytz
 import matplotlib.pyplot as plt
 from datetime import date
-import math
-
-
 
 #define the ticker symbol
 SnP500 = 'SPY'
@@ -21,7 +16,6 @@ class Stock:
             self.start = startdate
             self.end = enddate
             self.download = 0
-
             self.datecounter = 0
             self.minprice = 100000
             self.mindate = 0
@@ -29,9 +23,11 @@ class Stock:
             self.maxdate = 0
             self.dates = []
             self.close = []
+
         def downloadPeriodData(self):
             self.download = yf.download(str(self.ticker), start=str(self.start), end=str(self.end))
             return self.download
+
         def toString(self):
             self.datecounter = 0
             for index, row in self.download.iterrows():
@@ -76,9 +72,11 @@ class Stock:
             self.maxima =[]
             self.minima = []
             self.sma30 = pd.DataFrame()
+
         def downloadToDateData(self):
             self.download = yf.download(str(self.ticker), period=str(self.period), interval=str(self.timeint))
             return self.download
+
         def calcCloseAndDates(self):
             self.datecounter = 0
             for index, row in self.download.iterrows():
@@ -87,7 +85,6 @@ class Stock:
                 self.close.append(round(float(row['Close']), 4))
 
         def FindMaxima(self):
-
             length = len(self.close)
             if length >= 2:
                 if self.close[0] > self.close[1]:
@@ -103,7 +100,6 @@ class Stock:
             return self.maxima
 
         def FindMinima(self):
-
             length = len(self.close)
             if length >= 2:
                 if self.close[0] > self.close[1]:
@@ -117,6 +113,7 @@ class Stock:
                 if self.close[length - 1] < self.close[length - 2]:
                     self.minima.append(self.close[length - 1])
             return self.minima
+
         def PlotData(self,input,type):
             today = date.today()
             self.input = input
@@ -128,18 +125,14 @@ class Stock:
             plt.ylabel(self.type + 'Price $')
             plt.show()
 
-        def SMA30(self, list):
+        def SimpleMovingAverage(self, list, window=30):
             list = self.GetClosePrice()
             sma = pd.DataFrame(list)
-            sma30 = sma.rolling(window=30).mean()
+            sma30 = sma.rolling(window).mean()
             return sma30
-
 
         def GetClosePrice(self):
             return self.close
-
-
-
 
 snpJan20 = Stock.StockPeriod('SPY', '2020-01-01', '2020-01-31')
 snpJan20.downloadPeriodData()
@@ -163,7 +156,7 @@ closeprice = testtodate.GetClosePrice()
 # plt.plot(sma3, 'b')
 # plt.plot(sma, 'g')
 # plt.show()
-SMA30 = testtodate.SMA30(closeprice)
+SMA30 = testtodate.SimpleMovingAverage(closeprice)
 plt.plot(SMA30, 'g')
 plt.plot(closeprice, 'r' )
 plt.show()
