@@ -4,10 +4,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import date
 
-#define the ticker symbol
-SnP500 = 'SPY'
-SPY = yf.Ticker('SPY')
-
 class Stock:
 
     class StockPeriod:
