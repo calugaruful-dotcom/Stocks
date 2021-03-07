@@ -127,9 +127,9 @@ class Stock:
 
         def SimpleMovingAverage(self, window=30):
             list = self.GetClosePrice()
-            sma = pd.DataFrame(list)
-            sma30 = sma.rolling(window).mean()
-            return sma30
+            dataFrame = pd.DataFrame(list)
+            sma = dataFrame.rolling(window).mean()
+            return sma
 
         def GetClosePrice(self):
             return self.close
